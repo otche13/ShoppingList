@@ -1,22 +1,21 @@
 package ru.otche13.shoppinglist.presentation
 
-import android.util.Log
+
 import android.view.LayoutInflater
-import android.view.View
+
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat
+
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.DiffUtil
+
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+
 import ru.otche13.shoppinglist.R
 import ru.otche13.shoppinglist.databinding.ItemShopDisabledBinding
 import ru.otche13.shoppinglist.databinding.ItemShopEnabledBinding
 import ru.otche13.shoppinglist.domain.ShopItem
 
-class ShopListAdapter : ListAdapter<ShopItem,ShopItemViewHolder>(ShopItemDiffCallback()){
+class ShopListAdapter : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCallback()) {
 
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
     var onShopItemClickListener: ((ShopItem) -> Unit)? = null
@@ -27,17 +26,18 @@ class ShopListAdapter : ListAdapter<ShopItem,ShopItemViewHolder>(ShopItemDiffCal
             VIEW_TYPE_ENABLED -> R.layout.item_shop_enabled
             else -> throw RuntimeException("Unknown view type: $viewType")
         }
-        val binding= DataBindingUtil.inflate<ViewDataBinding>(
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(parent.context),
             layout,
             parent,
-            false)
+            false
+        )
         return ShopItemViewHolder(binding)
     }
 
     override fun onBindViewHolder(viewHolder: ShopItemViewHolder, position: Int) {
         val shopItem = getItem(position)
-        val binding=viewHolder.binding
+        val binding = viewHolder.binding
         binding.root.setOnLongClickListener {
             onShopItemLongClickListener?.invoke(shopItem)
             true
@@ -45,16 +45,13 @@ class ShopListAdapter : ListAdapter<ShopItem,ShopItemViewHolder>(ShopItemDiffCal
         binding.root.setOnClickListener {
             onShopItemClickListener?.invoke(shopItem)
         }
-        when(binding){
-            is ItemShopDisabledBinding->{
-                binding.tvName.text = shopItem.name
-                binding.tvCount.text = shopItem.count.toString()
+        when (binding) {
+            is ItemShopDisabledBinding -> {
+                binding.shopItem = shopItem
             }
-            is ItemShopEnabledBinding->{
-                binding.tvName.text = shopItem.name
-                binding.tvCount.text = shopItem.count.toString()
+            is ItemShopEnabledBinding -> {
+                binding.shopItem = shopItem
             }
-
         }
     }
 
@@ -69,9 +66,9 @@ class ShopListAdapter : ListAdapter<ShopItem,ShopItemViewHolder>(ShopItemDiffCal
 
     companion object {
 
-        const val VIEW_TYPE_ENABLED = 1
-        const val VIEW_TYPE_DISABLED = 2
+        const val VIEW_TYPE_ENABLED = 100
+        const val VIEW_TYPE_DISABLED = 101
 
-        const val MAX_POOL_SIZE = 15
+        const val MAX_POOL_SIZE = 30
     }
 }

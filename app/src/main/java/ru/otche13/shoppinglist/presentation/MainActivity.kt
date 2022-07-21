@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import ru.otche13.shoppinglist.databinding.ActivityMainBinding
 
-
-
 class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
     private lateinit var viewModel: MainViewModel
@@ -45,8 +43,6 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedList
     private fun isOnePaneMode(): Boolean {
         return binding.shopItemContainer == null
     }
-
-
 
     private fun launchFragment(fragment: Fragment) {
         supportFragmentManager.popBackStack()
